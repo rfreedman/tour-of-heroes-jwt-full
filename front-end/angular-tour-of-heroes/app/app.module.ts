@@ -13,11 +13,12 @@ import {AppRoutingModule} from "./app-routing.module";
 
 
 import { AppComponent }  from './app.component';
-import { DashboardComponent } from "./dashboard.component";
-import { HeroesComponent } from "./heroes.component";
+import { HomeComponent } from './home.component';
+import { DashboardComponent } from './dashboard.component';
+import { HeroesComponent } from './heroes.component';
 import { HeroDetailComponent } from './hero-detail.component';
-import { HeroService } from "./hero.service";
-import {HeroSearchComponent} from "./hero-search.component";
+import { HeroService } from './hero.service';
+import {HeroSearchComponent} from './hero-search.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {HeroSearchComponent} from "./hero-search.component";
   ],
   declarations: [
   	AppComponent,
+    HomeComponent,
     DashboardComponent,
 	  HeroDetailComponent,
     HeroesComponent,
