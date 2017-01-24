@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
-
+import { AuthenticationService } from './authentication.service';
 import 'rxjs/add/operator/toPromise';
 
 import { Hero } from './hero'
@@ -8,17 +8,21 @@ import { Hero } from './hero'
 @Injectable()
 export class HeroService {
 
-  //private heroesUrl = 'app/heroes';
   private heroesUrl = 'http://localhost:8080/heroes';
 
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new Headers({
+     'Content-Type': 'application/json',
+     'Authorization': 'Bearer ' + this.authenticationService.token
+     });
 
-  constructor(private http: Http) {
-
+  constructor(
+    private http: Http,
+    private authenticationService: AuthenticationService) {
   }
 
   getHeroes(): Promise<Hero[]> {
-     return this.http.get(this.heroesUrl)
+     return this.http
+      .get(this.heroesUrl, {headers: this.headers})
       .toPromise()
       //.then(response => response.json().data as Hero[])
       .then(response => response.json()._embedded.heroes as Hero[])
