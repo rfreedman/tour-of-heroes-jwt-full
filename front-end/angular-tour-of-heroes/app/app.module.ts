@@ -16,7 +16,7 @@ import { HeroDetailComponent } from './hero-detail.component';
 import { HeroService } from './hero.service';
 import { HeroSearchComponent } from './hero-search.component';
 import { AuthenticationService } from './authentication.service';
-
+import { CanActivateAuthGuard } from './can-activate.authguard';
 
 @NgModule({
   imports:      [
@@ -34,7 +34,7 @@ import { AuthenticationService } from './authentication.service';
     HeroesComponent,
     HeroSearchComponent
   ],
-  providers: [ HeroService, AuthenticationService ],
+  providers: [ HeroService, AuthenticationService, CanActivateAuthGuard ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {

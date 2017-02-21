@@ -7,14 +7,10 @@ import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class AuthenticationService {
-    public token: string;
     private authUrl = 'http://localhost:8080/auth';
     private headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(private http: Http) {
-        // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
     }
 
     login(username: string, password: string): Observable<boolean> {
@@ -23,9 +19,6 @@ export class AuthenticationService {
                 // login successful if there's a jwt token in the response
                 let token = response.json() && response.json().token;
                 if (token) {
-                    // set token property
-                    this.token = token;
-
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
 
@@ -35,14 +28,22 @@ export class AuthenticationService {
                     // return false to indicate failed login
                     return false;
                 }
-
             }).catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 
+    getToken(): String {
+      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      var token = currentUser && currentUser.token;
+      return token ? token : "";
+    }
+
+    isLoggedIn(): boolean {
+      var token: String = this.getToken();
+      return token && token.length > 0;
+    }
 
     logout(): void {
         // clear token remove user from local storage to log user out
-        this.token = null;
         localStorage.removeItem('currentUser');
     }
 }

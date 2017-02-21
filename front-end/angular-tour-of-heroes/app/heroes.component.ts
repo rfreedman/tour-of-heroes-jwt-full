@@ -24,8 +24,16 @@ export class HeroesComponent implements OnInit {
   }
 
 	getHeroes(): void {
-	  this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+	  this.heroService.getHeroes()
+      .then(
+        heroes => this.heroes = heroes,
+        error => {
+        this.router.navigate(['login']);
+        console.error('An error occurred in heroes component, navigating to login: ', error);
+        }
+      )
   }
+
 
 	onSelect(hero: Hero): void {
 		this.selectedHero = hero;

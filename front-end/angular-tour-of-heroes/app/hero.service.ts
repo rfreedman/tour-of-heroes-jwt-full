@@ -10,10 +10,12 @@ export class HeroService {
 
   private heroesUrl = 'http://localhost:8080/heroes';
 
-  private headers = new Headers({
-     'Content-Type': 'application/json',
-     'Authorization': 'Bearer ' + this.authenticationService.token
-     });
+  private getHeaders(): Headers {
+    return new Headers({
+       'Content-Type': 'application/json',
+       'Authorization': 'Bearer ' + this.authenticationService.getToken()
+    });
+  }
 
   constructor(
     private http: Http,
@@ -22,16 +24,14 @@ export class HeroService {
 
   getHeroes(): Promise<Hero[]> {
      return this.http
-      .get(this.heroesUrl, {headers: this.headers})
+      .get(this.heroesUrl, {headers: this.getHeaders()})
       .toPromise()
-      //.then(response => response.json().data as Hero[])
       .then(response => response.json()._embedded.heroes as Hero[])
-      .catch(this.handleError);
-
+      .catch(this.handleError)
   }
 
   private handleError(error: any): Promise<any> {
-    console.error('An error occurred: ', error); // for demo only
+    console.error('An error occurred in hero service: ', error); // for demo only
     return Promise.reject(error.message || error);
   }
 
@@ -43,9 +43,8 @@ export class HeroService {
 
   create(name: string): Promise<Hero> {
     return this.http
-      .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.headers})
+      .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.getHeaders()})
       .toPromise()
-      //.then(res => res.json().data)
       .then(res => res.json())
       .catch(this.handleError)
   }
@@ -53,7 +52,7 @@ export class HeroService {
   update(hero: Hero): Promise<Hero> {
     const url = `${this.heroesUrl}/${hero.id}`;
     return this.http
-      .put(url, JSON.stringify(hero), {headers: this.headers})
+      .put(url, JSON.stringify(hero), {headers: this.getHeaders()})
       .toPromise()
       .then(() => hero)
       .catch(this.handleError);
@@ -63,7 +62,7 @@ export class HeroService {
     console.log(`hero.service - deleting ${id}`);
     const url = `${this.heroesUrl}/${id}`;
     return this.http
-      .delete(url, {headers: this.headers})
+      .delete(url, {headers: this.getHeaders()})
       .toPromise()
       .then(() => null)
       .catch(this.handleError);

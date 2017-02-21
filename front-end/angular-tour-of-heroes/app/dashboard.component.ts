@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router';
 
 import { Hero } from './hero'
 import { HeroService } from './hero.service'
@@ -12,11 +13,17 @@ import { HeroService } from './hero.service'
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
 
-  constructor(private heroService: HeroService) {
+  constructor(private router: Router, private heroService: HeroService) {
   }
 
   ngOnInit(): void {
     this.heroService.getHeroes()
-      .then(heroes => this.heroes = heroes.slice(0, 4));
+      .then(
+        heroes => this.heroes = heroes.slice(0, 4),
+        error => {
+          this.router.navigate(['login']);
+          console.error('An error occurred in dashboard component, navigating to login: ', error);
+        }
+      );
   }
 }
