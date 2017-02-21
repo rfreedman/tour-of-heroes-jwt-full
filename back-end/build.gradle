@@ -20,7 +20,7 @@ task copySqlImport(type: Copy) {
 build.dependsOn(copySqlImport)
 
 jar {
-    baseName = 'gs-accessing-data-rest'
+    baseName = 'back-end'
     version = '0.1.0'
 	from('src/main/resources/') {
 		include '**/*.*'
