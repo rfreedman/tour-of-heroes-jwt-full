@@ -12,7 +12,7 @@ import { AuthenticationService } from './authentication.service';
 export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
-    error = '';
+    error: any;
 
     constructor(
         private router: Router,

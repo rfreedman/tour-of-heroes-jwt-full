@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
-import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { Hero } from './hero';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class HeroSearchService {
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private authenticationService: AuthenticationService) {
   }
 
-  private getHeaders(): Headers {
-    return new Headers({
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
        'Content-Type': 'application/json',
        'Authorization': 'Bearer ' + this.authenticationService.getToken()
     });
@@ -22,6 +22,6 @@ export class HeroSearchService {
   search(term: string): Observable<Hero[]> {
     return this.http
       .get(`http://localhost:8080/heroes/search/findByName?name=${term}`, {headers: this.getHeaders()})
-      .map((r: Response) => r.json()._embedded.heroes as Hero[]);
+      .map((r: any) => r._embedded.heroes as Hero[]);
   }
 }

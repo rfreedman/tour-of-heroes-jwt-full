@@ -1,15 +1,14 @@
-import { browser, element, by } from 'protractor';
+import { AngularTourOfHeroes5Page } from './app.po';
 
-describe('QuickStart E2E Tests', function () {
+describe('angular-tour-of-heroes5 App', () => {
+  let page: AngularTourOfHeroes5Page;
 
-  let expectedMsg = 'Hello Angular';
-
-  beforeEach(function () {
-    browser.get('');
+  beforeEach(() => {
+    page = new AngularTourOfHeroes5Page();
   });
 
-  it('should display: ' + expectedMsg, function () {
-    expect(element(by.css('h1')).getText()).toEqual(expectedMsg);
+  it('should display welcome message', () => {
+    page.navigateTo();
+    expect(page.getParagraphText()).toEqual('Welcome to app!!');
   });
-
 });

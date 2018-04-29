@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from "@angular/http";
 import { AuthenticationService } from './authentication.service';
 import 'rxjs/add/operator/toPromise';
 
 import { Hero } from './hero'
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class HeroService {
 
   private heroesUrl = 'http://localhost:8080/heroes';
 
-  private getHeaders(): Headers {
-    return new Headers({
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
        'Content-Type': 'application/json',
        'Authorization': 'Bearer ' + this.authenticationService.getToken()
     });
   }
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private authenticationService: AuthenticationService) {
   }
 
@@ -26,7 +26,7 @@ export class HeroService {
      return this.http
       .get(this.heroesUrl, {headers: this.getHeaders()})
       .toPromise()
-      .then(response => response.json()._embedded.heroes as Hero[])
+      .then((response: any) => response._embedded.heroes as Hero[])
       .catch(this.handleError)
   }
 
@@ -45,7 +45,6 @@ export class HeroService {
     return this.http
       .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.getHeaders()})
       .toPromise()
-      .then(res => res.json())
       .catch(this.handleError)
   }
 
